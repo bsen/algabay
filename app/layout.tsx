@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "algabay | We build Startups",
+  title: "Algabay | The Startup for Startups",
   description:
     "We specialize in app development, website creation, blockchain and software development",
   icons: {
