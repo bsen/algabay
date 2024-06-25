@@ -25,6 +25,7 @@ const Landing: React.FC = () => {
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
+      <GradientBorder />
       <section className="h-screen">
         <ProductsPage productShow={productShow} />
       </section>
@@ -43,7 +44,6 @@ const Header: React.FC<HeaderProps> = ({
   setMobileMenuOpen,
 }) => (
   <header className="fixed top-0 left-0 right-0 h-[10vh] z-50 overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-gradient-background opacity-30"></div>
     <div className="relative h-full bg-black/50 backdrop-filter backdrop-blur-md">
       <div className="flex justify-between items-center h-full px-4 md:px-5">
         <Logo />
@@ -119,8 +119,8 @@ const ContactButton: React.FC = () => (
 );
 
 const GradientBorder: React.FC = () => (
-  <div className="w-full h-1 absolute bottom-0 left-0 right-0">
-    <div className="w-full h-full animate-border rounded-full bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md animate-spread"></div>
+  <div className="w-full h-2 mt-[9vh] fixed">
+    <div className="w-full h-full animate-border  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-lg animate-spread"></div>
   </div>
 );
 
@@ -134,7 +134,7 @@ const ProductsPage: React.FC<{ productShow: boolean }> = ({ productShow }) => (
 const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
   <div
     className={`p-10 transition-transform cursor-pointer duration-1000 ${
-      productShow ? "scale-75" : "scale-110"
+      productShow ? "scale-75 opacity-60" : "scale-110"
     }`}
   >
     <h1 className="text-2xl md:text-[3rem] font-thin text-center md:text-left text-white">
@@ -235,7 +235,7 @@ const TracksPage = () => {
   return (
     <div
       ref={ref}
-      className="pt-[10vh] flex flex-col items-center justify-center min-h-screen px-4 md:px-20 text-white"
+      className="pt-[10vh] flex flex-col items-center justify-center h-screen px-4 md:px-20 text-white"
     >
       <motion.h2
         initial="hidden"
@@ -292,9 +292,15 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="text-center text-xs bg-black text-neutral-600 py-8 px-4 md:px-20">
-      <p className="mt-2">Contact: +91 8116300272 | info@algabay.com</p>
-      <p>&copy; {currentYear} Algabay Private Limited. All rights reserved.</p>
+    <footer className="flex justify-center text-center text-xs bg-black text-neutral-600 py-8 px-4 md:px-20">
+      <div className="w-fit">
+        <div className="w-full h-1 animate-border mt-20 mb-5  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
+        <p className="mt-2">Contact: +91 8116300272 | info@algabay.com</p>
+        <p>
+          &copy; {currentYear} Algabay Private Limited. All rights reserved.
+        </p>
+        <div className="w-full h-1 animate-border my-5  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
+      </div>
     </footer>
   );
 };
