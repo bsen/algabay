@@ -46,3 +46,30 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@keyframes spread {
+  0% {
+    transform: scaleY(0.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scaleY(2);
+    opacity: 0.2;
+  }
+}
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-background {
+  animation: gradient-animation 5s ease infinite;
+  background-size: 200% 200%;
+}

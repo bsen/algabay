@@ -1,23 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import MenuIcon from "@mui/icons-material/Menu";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 
 interface HeaderProps {
   productShow: boolean;
   setProductShow: React.Dispatch<React.SetStateAction<boolean>>;
-  trackShow: boolean;
-  setTrackShow: React.Dispatch<React.SetStateAction<boolean>>;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Landing: React.FC = () => {
   const [productShow, setProductShow] = useState<boolean>(false);
-  const [trackShow, setTrackShow] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   return (
@@ -25,8 +22,6 @@ const Landing: React.FC = () => {
       <Header
         productShow={productShow}
         setProductShow={setProductShow}
-        trackShow={trackShow}
-        setTrackShow={setTrackShow}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
@@ -34,7 +29,7 @@ const Landing: React.FC = () => {
         <ProductsPage productShow={productShow} />
       </section>
       <section className="min-h-screen">
-        <TracksPage trackShow={trackShow} />
+        <TracksPage />
       </section>
       <Footer />
     </div>
@@ -44,33 +39,33 @@ const Landing: React.FC = () => {
 const Header: React.FC<HeaderProps> = ({
   productShow,
   setProductShow,
-  trackShow,
-  setTrackShow,
   mobileMenuOpen,
   setMobileMenuOpen,
 }) => (
-  <header className="fixed top-0 left-0 right-0 bg-black/20 backdrop-filter backdrop-blur-md text-white text-xl md:text-2xl px-4 md:px-5 h-[10vh] z-50">
-    <div className="flex justify-between items-center h-full">
-      <Logo />
-      <MobileMenuIcon
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
-      <DesktopMenu
-        productShow={productShow}
-        setProductShow={setProductShow}
-        trackShow={trackShow}
-        setTrackShow={setTrackShow}
-      />
+  <header className="fixed top-0 left-0 right-0 h-[10vh] z-50 overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-gradient-background opacity-30"></div>
+    <div className="relative h-full bg-black/50 backdrop-filter backdrop-blur-md">
+      <div className="flex justify-between items-center h-full px-4 md:px-5">
+        <Logo />
+        <MobileMenuIcon
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+        />
+        <DesktopMenu
+          productShow={productShow}
+          setProductShow={setProductShow}
+        />
+      </div>
     </div>
-    <GradientBorder />
   </header>
 );
 
 const Logo: React.FC = () => (
   <div className="flex gap-2 items-center transition-transform cursor-pointer duration-500 ease-in-out hover:scale-110">
     <img src="/logo.png" className="h-8 md:h-10" alt="logo" />
-    <div className="font-light text-white font-lexend text-lg">algabay</div>
+    <div className="font-extralight text-white font-lexend text-xl">
+      algabay
+    </div>
   </div>
 );
 
@@ -85,26 +80,18 @@ const MobileMenuIcon: React.FC<{
 
 const DesktopMenu: React.FC<
   Omit<HeaderProps, "mobileMenuOpen" | "setMobileMenuOpen">
-> = ({ productShow, setProductShow, trackShow, setTrackShow }) => (
-  <div className="hidden md:flex gap-10 items-center text-base font-light">
+> = ({ productShow, setProductShow }) => (
+  <div className="hidden md:flex gap-10 items-center text-base font-light text-white">
     <MenuDropdown
       title="What we build"
       isOpen={productShow}
       onClick={() => {
         setProductShow(!productShow);
-        setTrackShow(false);
       }}
     />
-    <MenuDropdown title="Tracks" isOpen={trackShow} onClick={scrollToTracks} />
     <ContactButton />
   </div>
 );
-const scrollToTracks = () => {
-  window.scrollTo({
-    top: 700,
-    behavior: "smooth",
-  });
-};
 
 const MenuDropdown: React.FC<{
   title: string;
@@ -124,7 +111,7 @@ const MenuDropdown: React.FC<{
 
 const ContactButton: React.FC = () => (
   <div
-    className="text-base transition-transform cursor-pointer duration-500 ease-in-out hover:scale-110"
+    className="text-base bg-white text-black px-4 transition-transform cursor-pointer duration-500 ease-in-out hover:scale-110"
     onClick={() => (window.location.href = "https://wa.me/8116300272")}
   >
     Contact us
@@ -132,7 +119,9 @@ const ContactButton: React.FC = () => (
 );
 
 const GradientBorder: React.FC = () => (
-  <div className="w-full rounded-l rounded-r rounded-full inset-x-0 absolute bottom-0 h-0.5 bg-gradient-to-r from-rose-500 via-sky-500 to-green-500 animate-border"></div>
+  <div className="w-full h-1 absolute bottom-0 left-0 right-0">
+    <div className="w-full h-full animate-border rounded-full bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md animate-spread"></div>
+  </div>
 );
 
 const ProductsPage: React.FC<{ productShow: boolean }> = ({ productShow }) => (
@@ -190,7 +179,11 @@ const ProductIcons: React.FC<{ productShow: boolean }> = ({ productShow }) => (
     ))}
   </div>
 );
-const TracksPage: React.FC<{ trackShow: boolean }> = ({ trackShow }) => {
+const TracksPage = () => {
+  const controls = useAnimation();
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
   const tracks = [
     "Food Delivery",
     "Taxi & Transportation",
@@ -214,21 +207,57 @@ const TracksPage: React.FC<{ trackShow: boolean }> = ({ trackShow }) => {
     "Real Estate",
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          controls.start("visible");
+        } else {
+          setIsVisible(false);
+          controls.start("hidden");
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [controls]);
+
   return (
-    <div className="pt-[10vh] flex flex-col items-center justify-center min-h-screen px-4 md:px-20 text-white">
+    <div
+      ref={ref}
+      className="pt-[10vh] flex flex-col items-center justify-center min-h-screen px-4 md:px-20 text-white"
+    >
       <motion.h2
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial="hidden"
+        animate={controls}
+        variants={{
+          visible: { opacity: 1, y: 0 },
+          hidden: { opacity: 0, y: 50 },
+        }}
         transition={{ duration: 0.5 }}
-        className="text-2xl md:text-4xl font-thin mb-6 bg-gradient-to-r from-rose-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
+        className="text-2xl md:text-4xl font-thin mb-6 bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
       >
         Our On Demand Industries
       </motion.h2>
       <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial="hidden"
+        animate={controls}
+        variants={{
+          visible: { opacity: 1 },
+          hidden: { opacity: 0 },
+        }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        className="text-xl font-thin text-center mb-16 max-w-3xl bg-gradient-to-r from-rose-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
+        className="text-xl font-thin text-center mb-16 max-w-3xl bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
       >
         We specialize in building cutting-edge solutions across various
         industries. Our expertise allows us to create innovative applications
@@ -238,10 +267,18 @@ const TracksPage: React.FC<{ trackShow: boolean }> = ({ trackShow }) => {
         {tracks.map((track, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 * index, duration: 0.5 }}
-            className="bg-white/10 rounded-lg p-6 hover:bg-gradient-to-r from-yellow-800 via-indigo-800 to-purple-800 animate-border transition-all cursor-pointer"
+            custom={index}
+            initial="hidden"
+            animate={controls}
+            variants={{
+              visible: (i) => ({
+                opacity: 1,
+                scale: 1,
+                transition: { delay: 0.2 * i, duration: 0.5 },
+              }),
+              hidden: { opacity: 0, scale: 0.9 },
+            }}
+            className="bg-white/10 rounded-lg p-6 hover:bg-gradient-to-r from-orange-800 via-indigo-800 to-purple-800 animate-border transition-all cursor-pointer"
           >
             <h3 className="text-xl font-thin text-neutral-300">{track}</h3>
           </motion.div>
@@ -256,8 +293,8 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="text-center text-xs bg-black text-neutral-600 py-8 px-4 md:px-20">
+      <p className="mt-2">Contact: +91 8116300272 | info@algabay.com</p>
       <p>&copy; {currentYear} Algabay Private Limited. All rights reserved.</p>
-      <p className="mt-2">Phone: +91 8116300272 | Email: info@algabay.com</p>
     </footer>
   );
 };
