@@ -18,7 +18,7 @@ const Landing: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   return (
-    <div className="bg-black min-h-screen overflow-x-hidden">
+    <div className="bg-black h-screen overflow-x-hidden">
       <Header
         productShow={productShow}
         setProductShow={setProductShow}
@@ -26,10 +26,10 @@ const Landing: React.FC = () => {
         setMobileMenuOpen={setMobileMenuOpen}
       />
       <GradientBorder />
-      <section className="h-screen">
+      <section>
         <ProductsPage productShow={productShow} />
       </section>
-      <section className="min-h-screen">
+      <section>
         <TracksPage />
       </section>
       <Footer />
@@ -125,7 +125,7 @@ const GradientBorder: React.FC = () => (
 );
 
 const ProductsPage: React.FC<{ productShow: boolean }> = ({ productShow }) => (
-  <div className="pt-[10vh] flex flex-col items-center justify-center min-h-screen px-4 md:px-0">
+  <div className="pt-[10vh] flex flex-col items-center justify-center h-screen px-4 md:px-0">
     <HeroSection productShow={productShow} />
     <ProductIcons productShow={productShow} />
   </div>
@@ -161,7 +161,7 @@ const CallToActionButton: React.FC = () => (
 const ProductIcons: React.FC<{ productShow: boolean }> = ({ productShow }) => (
   <div
     className={`transition-transform cursor-pointer duration-1000 flex flex-wrap justify-center md:justify-evenly w-full md:w-[80%] text-white font-light ${
-      productShow ? "scale-125" : "scale-75 opacity-60"
+      productShow ? "scale-125 " : "scale-75 opacity-60"
     }`}
   >
     {["WEBSITE", "UI UX", "AI", "APP", "BLOCKCHAIN"].map((item, index) => (
@@ -185,26 +185,22 @@ const TracksPage = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const tracks = [
-    "Food Delivery",
-    "Taxi & Transportation",
-    "Education",
-    "Grocery Delivery",
-    "Beauty & Salon",
-    "Fitness",
-    "Rental",
-    "Consultation App",
-    "E-commerce Delivery",
-    "Home Service",
-    "Healthcare",
-    "Freelancer",
-    "Social Media App",
-    "Pharmacy Delivery",
-    "Logistics",
-    "Ecommerce",
-    "Dating App",
-    "Pickup & Delivery",
-    "Concierge Services",
-    "Real Estate",
+    { image: "food-delivery.png", title: "Food Delivery" },
+    { image: "taxi.png", title: "Taxi & Transportation" },
+    { image: "education.png", title: "Education" },
+    { image: "grocery.png", title: "Grocery Delivery" },
+    { image: "beauty.png", title: "Beauty & Salon" },
+    { image: "fitness.png", title: "Fitness" },
+    { image: "rental.png", title: "Rental" },
+    { image: "consultation.png", title: "Consultation App" },
+    { image: "ecommerce.png", title: "E-commerce" },
+    { image: "home-service.png", title: "Home Service" },
+    { image: "healthcare.png", title: "Healthcare" },
+    { image: "freelancer.png", title: "Freelancer" },
+    { image: "social-media.png", title: "Social Media App" },
+    { image: "dating.png", title: "Dating App" },
+    { image: "pickup-delivery.png", title: "Pickup & Delivery" },
+    { image: "real-estate.png", title: "Real Estate" },
   ];
 
   useEffect(() => {
@@ -235,7 +231,7 @@ const TracksPage = () => {
   return (
     <div
       ref={ref}
-      className="pt-[10vh] flex flex-col items-center justify-center h-screen px-4 md:px-20 text-white"
+      className="pt-[10vh] flex flex-col items-center justify-center px-4 md:px-20 text-white"
     >
       <motion.h2
         initial="hidden"
@@ -257,13 +253,13 @@ const TracksPage = () => {
           hidden: { opacity: 0 },
         }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        className="text-xl font-thin text-center mb-16 max-w-3xl bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
+        className="text-base md:text-xl font-thin text-center mb-16 max-w-3xl bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
       >
         We specialize in building cutting-edge solutions across various
         industries. Our expertise allows us to create innovative applications
         tailored to your specific needs.
       </motion.p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {tracks.map((track, index) => (
           <motion.div
             key={index}
@@ -278,21 +274,27 @@ const TracksPage = () => {
               }),
               hidden: { opacity: 0, scale: 0.9 },
             }}
-            className="bg-white/10 rounded-lg p-6 hover:bg-gradient-to-r from-orange-800 via-indigo-800 to-purple-800 animate-border transition-all cursor-pointer"
+            className="bg-white/10 rounded-lg p-4 md:p-6 hover:bg-gradient-to-r from-orange-800 via-indigo-800 to-purple-800 animate-border transition-all cursor-pointer flex flex-col items-center"
           >
-            <h3 className="text-xl font-thin text-neutral-300">{track}</h3>
+            <img
+              src={`/industries/${track.image}`}
+              alt={track.title}
+              className="w-10 h-10 mb-4 object-contain opacity-80"
+            />
+            <h3 className="text-lg md:text-xl font-thin text-neutral-300 text-center">
+              {track.title}
+            </h3>
           </motion.div>
         ))}
       </div>
     </div>
   );
 };
-
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="flex justify-center text-center text-xs bg-black text-neutral-600 py-8 px-4 md:px-20">
+    <footer className="bottom-0 flex justify-center text-center text-xs bg-black text-neutral-600 py-8 px-4 md:px-20">
       <div className="w-fit">
         <div className="w-full h-1 animate-border mt-20 mb-5  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
         <p className="mt-2">Contact: +91 8116300272 | info@algabay.com</p>
