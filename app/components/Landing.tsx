@@ -9,9 +9,8 @@ import { motion, useAnimation } from "framer-motion";
 interface HeaderProps {
   productShow: boolean;
   setProductShow: React.Dispatch<React.SetStateAction<boolean>>;
-  mobileMenuOpen: boolean;
-  setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 interface ProductIconsProps {
   productShow: boolean;
   setProductShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,12 +22,7 @@ const Landing: React.FC = () => {
 
   return (
     <div className="bg-white h-screen overflow-x-hidden">
-      <Header
-        productShow={productShow}
-        setProductShow={setProductShow}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
+      <Header productShow={productShow} setProductShow={setProductShow} />
       <GradientBorder />
       <section>
         <ProductsPage
@@ -46,20 +40,12 @@ const Landing: React.FC = () => {
   );
 };
 
-const Header: React.FC<HeaderProps> = ({
-  productShow,
-  setProductShow,
-  mobileMenuOpen,
-  setMobileMenuOpen,
-}) => (
+const Header: React.FC<HeaderProps> = ({ productShow, setProductShow }) => (
   <header className="fixed top-0 left-0 right-0 h-[10vh] z-50 overflow-hidden">
     <div className="relative h-full bg-white/50 backdrop-filter backdrop-blur-md">
       <div className="flex justify-between items-center h-full px-4 md:px-5">
         <Logo />
-        <MobileMenuIcon
-          mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
-        />
+
         <DesktopMenu
           productShow={productShow}
           setProductShow={setProductShow}
@@ -76,21 +62,12 @@ const Logo: React.FC = () => (
   </div>
 );
 
-const MobileMenuIcon: React.FC<{
-  mobileMenuOpen: boolean;
-  setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ mobileMenuOpen, setMobileMenuOpen }) => (
-  <div className="md:hidden">
-    <MenuIcon onClick={() => setMobileMenuOpen(!mobileMenuOpen)} />
-  </div>
-);
-
 const DesktopMenu: React.FC<
   Omit<HeaderProps, "mobileMenuOpen" | "setMobileMenuOpen">
 > = ({ productShow, setProductShow }) => (
-  <div className="hidden md:flex gap-10 items-center text-base font-light text-black">
+  <div className="text-sm md:flex gap-10 items-center md:text-lg font-light text-black">
     <MenuDropdown
-      title="What we build"
+      title="What We Build"
       isOpen={productShow}
       onClick={() => {
         setProductShow(!productShow);
@@ -117,7 +94,7 @@ const MenuDropdown: React.FC<{
 
 const GradientBorder: React.FC = () => (
   <div className="w-full h-2 mt-[9vh] fixed">
-    <div className="w-full h-full animate-border  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-lg animate-spread"></div>
+    <div className="w-full h-full animate-border bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 blur-lg animate-spread"></div>
   </div>
 );
 
@@ -151,7 +128,7 @@ const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
 const CallToActionButton: React.FC = () => (
   <div
     onClick={() => window.open("https://wa.me/8116300272", "_blank")}
-    className="my-6 md:my-10 flex items-center justify-center md:justify-start gap-2 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-black text-white md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
+    className="hover:bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 animate-border my-6 md:my-10 flex items-center justify-center md:justify-start gap-2 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-black text-white md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
   >
     <div className="text-sm md:text-2xl">Let's Build Your Idea</div>
     <ArrowRightAltIcon sx={{ fontSize: { xs: 24, md: 30 } }} />
@@ -188,7 +165,6 @@ const ProductIcons: React.FC<ProductIconsProps> = ({
 const TracksPage = () => {
   const controls = useAnimation();
   const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   const tracks = [
     { image: "food-delivery.png", title: "Food Delivery" },
@@ -213,10 +189,8 @@ const TracksPage = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
           controls.start("visible");
         } else {
-          setIsVisible(false);
           controls.start("hidden");
         }
       },
@@ -246,8 +220,8 @@ const TracksPage = () => {
           visible: { opacity: 1, y: 0 },
           hidden: { opacity: 0, y: 50 },
         }}
-        transition={{ duration: 0.5 }}
-        className="text-2xl md:text-4xl font-extralight mb-6 bg-gradient-to-r from-purple-600 via-sky-600 to-green-600 animate-border bg-clip-text text-transparent"
+        transition={{ duration: 0.8 }}
+        className="text-2xl md:text-4xl font-extralight text-center mb-6 max-w-3xl text-neutral-800"
       >
         Our On Demand Industries
       </motion.h2>
@@ -258,8 +232,8 @@ const TracksPage = () => {
           visible: { opacity: 1 },
           hidden: { opacity: 0 },
         }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="text-base md:text-xl font-extralight text-center mb-16 max-w-3xl bg-gradient-to-r from-purple-600 via-sky-600 to-green-600 animate-border bg-clip-text text-transparent"
+        transition={{ delay: 0.8, duration: 0.8 }}
+        className="text-sm md:text-xl font-extralight text-center mb-16 max-w-3xl text-neutral-800"
       >
         We specialize in building cutting-edge solutions across various
         industries. Our expertise allows us to create innovative applications
@@ -276,11 +250,11 @@ const TracksPage = () => {
               visible: (i) => ({
                 opacity: 1,
                 scale: 1,
-                transition: { delay: 0.2 * i, duration: 0.5 },
+                transition: { delay: 0.15 * i, duration: 0.5 },
               }),
               hidden: { opacity: 0, scale: 0.9 },
             }}
-            className="bg-white text-black shadow-md rounded-lg p-4 md:p-6 hover:bg-gradient-to-r from-sky-300 via-indigo-300 to-purple-300 animate-border transition-all cursor-pointer flex flex-col items-center"
+            className="bg-white text-black shadow-md rounded-lg p-4 md:p-6 hover:shadow-xl cursor-pointer flex flex-col items-center"
           >
             <img
               src={`/LightThemeIndustries/${track.image}`}
@@ -358,77 +332,75 @@ const Numbers: React.FC = () => {
     isCountSectionInView
   );
   const industriesCount = useCountAnimation(24, 2000, isCountSectionInView);
-
+  const NumbersData = [
+    {
+      count: countryCount,
+      image: "country.png",
+      title: "Countries Served",
+    },
+    {
+      count: customersCount,
+      image: "customer.png",
+      title: "Customers",
+    },
+    {
+      count: industriesCount,
+      image: "industries.png",
+      title: "Industries",
+    },
+    {
+      count: globalOutReachCount,
+      image: "globaloutreach.png",
+      title: "Global Outreach",
+    },
+  ];
   return (
     <div
-      className="h-[60vh] flex flex-col md:flex-row items-center justify-evenly"
+      className="my-20 py-20 flex flex-col md:flex-row gap-10 items-center justify-evenly"
       ref={countSectionRef}
     >
-      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
-        <div className="text-5xl font-light text-neutral-800">
-          {countryCount}+
+      {NumbersData.map((data) => (
+        <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
+          <div className="text-4xl font-lexend font-extralight text-neutral-800">
+            {data.count}+
+          </div>
+          <img
+            src={`/Numbers/${data.image}`}
+            className="w-12 h-12 my-6"
+            alt="Athlete Icon"
+          />
+          <div className="font-extralight font-lexend">{data.title}</div>
         </div>
-        <img
-          src="/Numbers/country.png"
-          className="w-16 h-16 my-6"
-          alt="Athlete Icon"
-        />
-        <div className="font-light">Countries Served</div>
-      </div>
-      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
-        <div className="text-5xl font-light text-neutral-800">
-          {customersCount}+
-        </div>
-        <img
-          src="/Numbers/customer.png"
-          className="w-16 h-16 my-6"
-          alt="Athlete Icon"
-        />
-        <div className="font-light">Customer</div>
-      </div>
-      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
-        <div className="text-5xl font-light text-neutral-800">
-          {industriesCount}+
-        </div>
-        <img
-          src="/Numbers/industries.png"
-          className="w-16 h-16 my-6"
-          alt="Reach Icon"
-        />
-        <div className="font-light">Industries</div>
-      </div>
-      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
-        <div className="text-5xl font-light text-neutral-800">
-          {globalOutReachCount}+
-        </div>
-        <img
-          src="/Numbers/global-reach.png"
-          className="w-16 h-16 my-6"
-          alt="Reach Icon"
-        />
-        <div className="font-light">Global Outreach</div>
-      </div>
+      ))}
     </div>
   );
 };
 
 const Partners: React.FC = () => {
+  const PartnersData = [
+    {
+      image: "google.png",
+      title: "Google",
+    },
+    {
+      image: "aws.png",
+      title: "AWS",
+    },
+    {
+      image: "microsoft.png",
+      title: "Microsoft",
+    },
+  ];
   return (
-    <div className=" flex flex-col gap-16 items-center justify-evenly">
-      <div className="text-4xl font-light text-neutral-800">Backed By</div>
-      <div className="w-full flex flex-col md:flex-row items-center justify-evenly">
-        <div className="flex flex-col gap-2 items-center justify-center text-2xl font-extralight">
-          <img src="/Partners/google.png" className="h-20" />
-          <div>Google</div>
-        </div>
-        <div className="flex flex-col gap-2 items-center justify-center text-2xl font-extralight">
-          <img src="/Partners/aws.png" className="h-20" />
-          <div>AWS</div>
-        </div>
-        <div className="flex flex-col gap-2 items-center justify-center text-2xl font-extralight">
-          <img src="/Partners/microsoft.png" className="h-20" />
-          <div>Microsoft</div>
-        </div>
+    <div className="flex flex-col gap-10 items-center justify-evenly text-neutral-800">
+      <div className="text-3xl font-extralight font-lexend">Backed By</div>
+      <div className="w-full flex flex-col md:flex-row gap-10 items-center justify-evenly">
+        {PartnersData.map((data) => (
+          <div className="flex flex-col gap-4 items-center justify-center text-2xl font-extralight">
+            <img src={`/Partners/${data.image}`} className="h-20" />
+            <div className="font-extralight font-lexend">{data.title}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
