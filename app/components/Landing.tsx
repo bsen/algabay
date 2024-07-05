@@ -39,6 +39,8 @@ const Landing: React.FC = () => {
       <section>
         <TracksPage />
       </section>
+      <Numbers />
+      <Partners />
       <Footer />
     </div>
   );
@@ -92,9 +94,6 @@ const DesktopMenu: React.FC<
       isOpen={productShow}
       onClick={() => {
         setProductShow(!productShow);
-        setTimeout(() => {
-          setProductShow(false);
-        }, 5000);
       }}
     />
   </div>
@@ -166,12 +165,9 @@ const ProductIcons: React.FC<ProductIconsProps> = ({
   <div
     onClick={() => {
       setProductShow(!productShow);
-      setTimeout(() => {
-        setProductShow(false);
-      }, 5000);
     }}
     className={`transition-transform cursor-pointer duration-1000 flex flex-wrap justify-center md:justify-evenly w-full md:w-[80%] text-white font-light ${
-      productShow ? "scale-125 " : "scale-75 opacity-60"
+      productShow ? "scale-125 " : "scale-90 opacity-60"
     }`}
   >
     {["WEBSITE", "UI UX", "AI", "APP", "BLOCKCHAIN"].map((item, index) => (
@@ -180,7 +176,7 @@ const ProductIcons: React.FC<ProductIconsProps> = ({
         className="text-black flex flex-col gap-2 justify-center items-center m-4 md:m-0"
       >
         <img
-          src={`/blackTheme/${item.toLowerCase()}.png`}
+          src={`/DarkThemeProducts/${item.toLowerCase()}.png`}
           className="h-10 md:h-12"
           alt={item}
         />
@@ -241,7 +237,7 @@ const TracksPage = () => {
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center justify-center px-4 md:px-20 text-white"
+      className="bg-white flex flex-col items-center justify-center px-4 md:px-20 text-white"
     >
       <motion.h2
         initial="hidden"
@@ -269,7 +265,7 @@ const TracksPage = () => {
         industries. Our expertise allows us to create innovative applications
         tailored to your specific needs.
       </motion.p>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-16">
         {tracks.map((track, index) => (
           <motion.div
             key={index}
@@ -284,14 +280,14 @@ const TracksPage = () => {
               }),
               hidden: { opacity: 0, scale: 0.9 },
             }}
-            className="bg-black rounded-lg p-4 md:p-6 hover:bg-gradient-to-r from-orange-500 via-indigo-500 to-purple-500 animate-border transition-all cursor-pointer flex flex-col items-center"
+            className="bg-white text-black shadow-md rounded-lg p-4 md:p-6 hover:bg-gradient-to-r from-sky-300 via-indigo-300 to-purple-300 animate-border transition-all cursor-pointer flex flex-col items-center"
           >
             <img
-              src={`/industries/${track.image}`}
+              src={`/LightThemeIndustries/${track.image}`}
               alt={track.title}
-              className="w-10 h-10 mb-4 object-contain opacity-80"
+              className="w-12 h-12 mb-4 object-contain"
             />
-            <h3 className="text-lg md:text-xl font-extralight text-white text-center">
+            <h3 className="text-lg md:text-xl font-extralight text-center">
               {track.title}
             </h3>
           </motion.div>
@@ -300,6 +296,144 @@ const TracksPage = () => {
     </div>
   );
 };
+
+const Numbers: React.FC = () => {
+  function useIntersectionObserver(ref: any, options: any) {
+    const [isIntersecting, setIsIntersecting] = useState(false);
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      }, options);
+
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return () => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      };
+    }, [ref, options]);
+
+    return isIntersecting;
+  }
+  function useCountAnimation(end: any, duration = 2000, isInView: any) {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      if (!isInView) return;
+
+      let start = 0;
+      const startTime = Date.now();
+
+      const timer = setInterval(() => {
+        const now = Date.now();
+        const progress = Math.min((now - startTime) / duration, 1);
+        const currentCount = Math.floor(progress * (end - start) + start);
+
+        setCount(currentCount);
+
+        if (progress === 1) {
+          clearInterval(timer);
+        }
+      }, 50);
+
+      return () => clearInterval(timer);
+    }, [end, duration, isInView]);
+
+    return count;
+  }
+
+  const countSectionRef = useRef(null);
+  const isCountSectionInView = useIntersectionObserver(countSectionRef, {
+    threshold: 0.1,
+  });
+  const countryCount = useCountAnimation(4, 2000, isCountSectionInView);
+  const customersCount = useCountAnimation(1200, 2000, isCountSectionInView);
+  const globalOutReachCount = useCountAnimation(
+    15000,
+    2000,
+    isCountSectionInView
+  );
+  const industriesCount = useCountAnimation(24, 2000, isCountSectionInView);
+
+  return (
+    <div
+      className="h-[60vh] flex flex-col md:flex-row items-center justify-evenly"
+      ref={countSectionRef}
+    >
+      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
+        <div className="text-5xl font-light text-neutral-800">
+          {countryCount}+
+        </div>
+        <img
+          src="/Numbers/country.png"
+          className="w-16 h-16 my-6"
+          alt="Athlete Icon"
+        />
+        <div className="font-light">Countries Served</div>
+      </div>
+      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
+        <div className="text-5xl font-light text-neutral-800">
+          {customersCount}+
+        </div>
+        <img
+          src="/Numbers/customer.png"
+          className="w-16 h-16 my-6"
+          alt="Athlete Icon"
+        />
+        <div className="font-light">Customer</div>
+      </div>
+      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
+        <div className="text-5xl font-light text-neutral-800">
+          {industriesCount}+
+        </div>
+        <img
+          src="/Numbers/industries.png"
+          className="w-16 h-16 my-6"
+          alt="Reach Icon"
+        />
+        <div className="font-light">Industries</div>
+      </div>
+      <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
+        <div className="text-5xl font-light text-neutral-800">
+          {globalOutReachCount}+
+        </div>
+        <img
+          src="/Numbers/global-reach.png"
+          className="w-16 h-16 my-6"
+          alt="Reach Icon"
+        />
+        <div className="font-light">Global Outreach</div>
+      </div>
+    </div>
+  );
+};
+
+const Partners: React.FC = () => {
+  return (
+    <div className=" flex flex-col gap-16 items-center justify-evenly">
+      <div className="text-4xl font-light text-neutral-800">Backed By</div>
+      <div className="w-full flex flex-col md:flex-row items-center justify-evenly">
+        <div className="flex flex-col gap-2 items-center justify-center text-2xl font-extralight">
+          <img src="/Partners/google.png" className="h-20" />
+          <div>Google</div>
+        </div>
+        <div className="flex flex-col gap-2 items-center justify-center text-2xl font-extralight">
+          <img src="/Partners/aws.png" className="h-20" />
+          <div>AWS</div>
+        </div>
+        <div className="flex flex-col gap-2 items-center justify-center text-2xl font-extralight">
+          <img src="/Partners/microsoft.png" className="h-20" />
+          <div>Microsoft</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
