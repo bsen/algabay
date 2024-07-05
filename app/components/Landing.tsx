@@ -12,13 +12,17 @@ interface HeaderProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+interface ProductIconsProps {
+  productShow: boolean;
+  setProductShow: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const Landing: React.FC = () => {
   const [productShow, setProductShow] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   return (
-    <div className="bg-black h-screen overflow-x-hidden">
+    <div className="bg-white h-screen overflow-x-hidden">
       <Header
         productShow={productShow}
         setProductShow={setProductShow}
@@ -27,7 +31,10 @@ const Landing: React.FC = () => {
       />
       <GradientBorder />
       <section>
-        <ProductsPage productShow={productShow} />
+        <ProductsPage
+          productShow={productShow}
+          setProductShow={setProductShow}
+        />
       </section>
       <section>
         <TracksPage />
@@ -44,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({
   setMobileMenuOpen,
 }) => (
   <header className="fixed top-0 left-0 right-0 h-[10vh] z-50 overflow-hidden">
-    <div className="relative h-full bg-black/50 backdrop-filter backdrop-blur-md">
+    <div className="relative h-full bg-white/50 backdrop-filter backdrop-blur-md">
       <div className="flex justify-between items-center h-full px-4 md:px-5">
         <Logo />
         <MobileMenuIcon
@@ -63,9 +70,7 @@ const Header: React.FC<HeaderProps> = ({
 const Logo: React.FC = () => (
   <div className="flex gap-2 items-center transition-transform cursor-pointer duration-500 ease-in-out hover:scale-110">
     <img src="/logo.png" className="h-8 md:h-10" alt="logo" />
-    <div className="font-extralight text-white font-lexend text-xl">
-      algabay
-    </div>
+    <div className="font-light text-neutral-800 text-xl">Algabay</div>
   </div>
 );
 
@@ -81,15 +86,17 @@ const MobileMenuIcon: React.FC<{
 const DesktopMenu: React.FC<
   Omit<HeaderProps, "mobileMenuOpen" | "setMobileMenuOpen">
 > = ({ productShow, setProductShow }) => (
-  <div className="hidden md:flex gap-10 items-center text-base font-light text-white">
+  <div className="hidden md:flex gap-10 items-center text-base font-light text-black">
     <MenuDropdown
       title="What we build"
       isOpen={productShow}
       onClick={() => {
         setProductShow(!productShow);
+        setTimeout(() => {
+          setProductShow(false);
+        }, 5000);
       }}
     />
-    <ContactButton />
   </div>
 );
 
@@ -109,25 +116,19 @@ const MenuDropdown: React.FC<{
   </div>
 );
 
-const ContactButton: React.FC = () => (
-  <div
-    className="text-base bg-white text-black px-4 transition-transform cursor-pointer duration-500 ease-in-out hover:scale-110"
-    onClick={() => (window.location.href = "https://wa.me/8116300272")}
-  >
-    Contact us
-  </div>
-);
-
 const GradientBorder: React.FC = () => (
   <div className="w-full h-2 mt-[9vh] fixed">
     <div className="w-full h-full animate-border  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-lg animate-spread"></div>
   </div>
 );
 
-const ProductsPage: React.FC<{ productShow: boolean }> = ({ productShow }) => (
+const ProductsPage: React.FC<{
+  productShow: boolean;
+  setProductShow: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ productShow, setProductShow }) => (
   <div className="pt-[10vh] flex flex-col items-center justify-center h-screen px-4 md:px-0">
     <HeroSection productShow={productShow} />
-    <ProductIcons productShow={productShow} />
+    <ProductIcons productShow={productShow} setProductShow={setProductShow} />
   </div>
 );
 
@@ -137,10 +138,10 @@ const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
       productShow ? "scale-75 opacity-60" : "scale-110"
     }`}
   >
-    <h1 className="text-2xl md:text-[3rem] font-thin text-center md:text-left text-white">
+    <h1 className="text-4xl md:text-[3.4rem] font-extralight text-center md:text-left text-black">
       The Startup for Startups
     </h1>
-    <p className="font-extralight text-sm md:text-lg font-lexend text-center md:text-left mt-4 text-white">
+    <p className="font-extralight text-sm md:text-xl font-lexend text-center md:text-left mt-4 text-black">
       We make ideas into realities, with specialize in app development, website
       development, software development and blockchain.
     </p>
@@ -150,16 +151,25 @@ const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
 
 const CallToActionButton: React.FC = () => (
   <div
-    onClick={() => (window.location.href = "https://wa.me/8116300272")}
-    className="my-6 md:my-10 flex items-center justify-center md:justify-start gap-3 md:gap-5 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-white text-black md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
+    onClick={() => window.open("https://wa.me/8116300272", "_blank")}
+    className="my-6 md:my-10 flex items-center justify-center md:justify-start gap-2 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-black text-white md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
   >
     <div className="text-sm md:text-2xl">Let's Build Your Idea</div>
     <ArrowRightAltIcon sx={{ fontSize: { xs: 24, md: 30 } }} />
   </div>
 );
 
-const ProductIcons: React.FC<{ productShow: boolean }> = ({ productShow }) => (
+const ProductIcons: React.FC<ProductIconsProps> = ({
+  productShow,
+  setProductShow,
+}) => (
   <div
+    onClick={() => {
+      setProductShow(!productShow);
+      setTimeout(() => {
+        setProductShow(false);
+      }, 5000);
+    }}
     className={`transition-transform cursor-pointer duration-1000 flex flex-wrap justify-center md:justify-evenly w-full md:w-[80%] text-white font-light ${
       productShow ? "scale-125 " : "scale-75 opacity-60"
     }`}
@@ -167,10 +177,10 @@ const ProductIcons: React.FC<{ productShow: boolean }> = ({ productShow }) => (
     {["WEBSITE", "UI UX", "AI", "APP", "BLOCKCHAIN"].map((item, index) => (
       <div
         key={index}
-        className="text-white flex flex-col gap-2 justify-center items-center m-4 md:m-0"
+        className="text-black flex flex-col gap-2 justify-center items-center m-4 md:m-0"
       >
         <img
-          src={`/${item.toLowerCase()}.png`}
+          src={`/blackTheme/${item.toLowerCase()}.png`}
           className="h-10 md:h-12"
           alt={item}
         />
@@ -231,7 +241,7 @@ const TracksPage = () => {
   return (
     <div
       ref={ref}
-      className="pt-[10vh] flex flex-col items-center justify-center px-4 md:px-20 text-white"
+      className="flex flex-col items-center justify-center px-4 md:px-20 text-white"
     >
       <motion.h2
         initial="hidden"
@@ -241,7 +251,7 @@ const TracksPage = () => {
           hidden: { opacity: 0, y: 50 },
         }}
         transition={{ duration: 0.5 }}
-        className="text-2xl md:text-4xl font-thin mb-6 bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
+        className="text-2xl md:text-4xl font-extralight mb-6 bg-gradient-to-r from-purple-600 via-sky-600 to-green-600 animate-border bg-clip-text text-transparent"
       >
         Our On Demand Industries
       </motion.h2>
@@ -253,7 +263,7 @@ const TracksPage = () => {
           hidden: { opacity: 0 },
         }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        className="text-base md:text-xl font-thin text-center mb-16 max-w-3xl bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 animate-border bg-clip-text text-transparent"
+        className="text-base md:text-xl font-extralight text-center mb-16 max-w-3xl bg-gradient-to-r from-purple-600 via-sky-600 to-green-600 animate-border bg-clip-text text-transparent"
       >
         We specialize in building cutting-edge solutions across various
         industries. Our expertise allows us to create innovative applications
@@ -274,14 +284,14 @@ const TracksPage = () => {
               }),
               hidden: { opacity: 0, scale: 0.9 },
             }}
-            className="bg-white/10 rounded-lg p-4 md:p-6 hover:bg-gradient-to-r from-orange-800 via-indigo-800 to-purple-800 animate-border transition-all cursor-pointer flex flex-col items-center"
+            className="bg-black rounded-lg p-4 md:p-6 hover:bg-gradient-to-r from-orange-500 via-indigo-500 to-purple-500 animate-border transition-all cursor-pointer flex flex-col items-center"
           >
             <img
               src={`/industries/${track.image}`}
               alt={track.title}
               className="w-10 h-10 mb-4 object-contain opacity-80"
             />
-            <h3 className="text-lg md:text-xl font-thin text-neutral-300 text-center">
+            <h3 className="text-lg md:text-xl font-extralight text-white text-center">
               {track.title}
             </h3>
           </motion.div>
@@ -294,7 +304,7 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bottom-0 flex justify-center text-center text-xs bg-black text-neutral-600 py-8 px-4 md:px-20">
+    <footer className="flex justify-center text-center text-xs bg-white text-neutral-600 py-8 px-4 md:px-20">
       <div className="w-fit">
         <div className="w-full h-1 animate-border mt-20 mb-5  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
         <p className="mt-2">Contact: +91 8116300272 | info@algabay.com</p>
