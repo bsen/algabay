@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import MenuIcon from "@mui/icons-material/Menu";
 import { motion, useAnimation } from "framer-motion";
 
 interface HeaderProps {
@@ -18,7 +17,6 @@ interface ProductIconsProps {
 
 const Landing: React.FC = () => {
   const [productShow, setProductShow] = useState<boolean>(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   return (
     <div className="bg-white h-screen overflow-x-hidden">
@@ -35,6 +33,7 @@ const Landing: React.FC = () => {
       </section>
       <Numbers />
       <Partners />
+      <Rating />
       <Footer />
     </div>
   );
@@ -58,7 +57,9 @@ const Header: React.FC<HeaderProps> = ({ productShow, setProductShow }) => (
 const Logo: React.FC = () => (
   <div className="flex gap-2 items-center transition-transform cursor-pointer duration-500 ease-in-out hover:scale-110">
     <img src="/logo.png" className="h-8 md:h-10" alt="logo" />
-    <div className="font-light text-neutral-800 text-xl">Algabay</div>
+    <div className="font-extralight text-neutral-800 text-2xl font-lexend">
+      algabay
+    </div>
   </div>
 );
 
@@ -94,7 +95,7 @@ const MenuDropdown: React.FC<{
 
 const GradientBorder: React.FC = () => (
   <div className="w-full h-2 mt-[9vh] fixed">
-    <div className="w-full h-full animate-border bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 blur-lg animate-spread"></div>
+    <div className="w-full h-full animate-border bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 blur-lg animate-spread"></div>
   </div>
 );
 
@@ -117,9 +118,9 @@ const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
     <h1 className="text-4xl md:text-[3.4rem] font-extralight text-center md:text-left text-black">
       The Startup for Startups
     </h1>
-    <p className="font-extralight text-sm md:text-xl font-lexend text-center md:text-left mt-4 text-black">
-      We make ideas into realities, with specialize in app development, website
-      development, software development and blockchain.
+    <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 font-extralight text-sm md:text-2xl text-center md:text-left mt-4">
+      We turn killer ideas into realities. From AI to blockchain, we're the
+      badass team that skyrockets your startup.
     </p>
     <CallToActionButton />
   </div>
@@ -128,7 +129,7 @@ const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
 const CallToActionButton: React.FC = () => (
   <div
     onClick={() => window.open("https://wa.me/8116300272", "_blank")}
-    className="hover:bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 animate-border my-6 md:my-10 flex items-center justify-center md:justify-start gap-2 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-black text-white md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
+    className="hover:bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 animate-border my-6 md:my-10 flex items-center justify-center md:justify-start gap-2 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-black text-white md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
   >
     <div className="text-sm md:text-2xl">Let's Build Your Idea</div>
     <ArrowRightAltIcon sx={{ fontSize: { xs: 24, md: 30 } }} />
@@ -211,7 +212,7 @@ const TracksPage = () => {
   return (
     <div
       ref={ref}
-      className="bg-white flex flex-col items-center justify-center px-4 md:px-20 text-white"
+      className="bg-white my-20 flex flex-col items-center justify-center px-4  text-white"
     >
       <motion.h2
         initial="hidden"
@@ -233,11 +234,10 @@ const TracksPage = () => {
           hidden: { opacity: 0 },
         }}
         transition={{ delay: 0.8, duration: 0.8 }}
-        className="text-sm md:text-xl font-extralight text-center mb-16 max-w-3xl text-neutral-800"
+        className="text-sm md:text-2xl font-extralight text-center mb-16 max-w-3xl text-neutral-800"
       >
-        We specialize in building cutting-edge solutions across various
-        industries. Our expertise allows us to create innovative applications
-        tailored to your specific needs.
+        We build tomorrow's tech for every industry. Your game changing idea?
+        We'll make it real.
       </motion.p>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-16">
         {tracks.map((track, index) => (
@@ -254,7 +254,7 @@ const TracksPage = () => {
               }),
               hidden: { opacity: 0, scale: 0.9 },
             }}
-            className="bg-white text-black shadow-md rounded-lg p-4 md:p-6 hover:shadow-xl cursor-pointer flex flex-col items-center"
+            className="bg-white text-black shadow-md rounded-lg p-4 md:p-6 hover:shadow-xl hover:scale-105 hover:bg-shadow-xl cursor-pointer flex flex-col items-center transition duration-300 ease-in-out"
           >
             <img
               src={`/LightThemeIndustries/${track.image}`}
@@ -361,15 +361,17 @@ const Numbers: React.FC = () => {
     >
       {NumbersData.map((data) => (
         <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
-          <div className="text-4xl font-lexend font-extralight text-neutral-800">
+          <div className="text-2xl font-lexend font-extralight text-neutral-800">
             {data.count}+
           </div>
           <img
             src={`/Numbers/${data.image}`}
-            className="w-12 h-12 my-6"
+            className="w-10 h-10 my-6"
             alt="Athlete Icon"
           />
-          <div className="font-extralight font-lexend">{data.title}</div>
+          <div className="text-xl font-extralight font-lexend">
+            {data.title}
+          </div>
         </div>
       ))}
     </div>
@@ -392,13 +394,15 @@ const Partners: React.FC = () => {
     },
   ];
   return (
-    <div className="flex flex-col gap-10 items-center justify-evenly text-neutral-800">
-      <div className="text-3xl font-extralight font-lexend">Backed By</div>
+    <div className="flex flex-col my-20 gap-8 items-center justify-evenly text-neutral-800">
+      <div className="text-2xl font-extralight font-lexend">Backed By</div>
       <div className="w-full flex flex-col md:flex-row gap-10 items-center justify-evenly">
         {PartnersData.map((data) => (
           <div className="flex flex-col gap-4 items-center justify-center text-2xl font-extralight">
-            <img src={`/Partners/${data.image}`} className="h-20" />
-            <div className="font-extralight font-lexend">{data.title}</div>
+            <img src={`/Partners/${data.image}`} className="h-14" />
+            <div className="font-extralight font-lexend text-xl">
+              {data.title}
+            </div>
           </div>
         ))}
       </div>
@@ -406,18 +410,59 @@ const Partners: React.FC = () => {
   );
 };
 
+const Rating: React.FC = () => {
+  return (
+    <div className="w-full flex justify-center py-8 items-center">
+      <div className="max-w-sm w-full">
+        <div className="text-center">
+          <div className="flex justify-center space-x-1 mb-2">
+            {[1, 2, 3, 4].map((star) => (
+              <svg
+                key={star}
+                className="w-10 h-10 text-yellow-400 fill-current"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+            <svg
+              className="w-10 h-10 text-yellow-400 fill-current"
+              viewBox="0 0 20 20"
+            >
+              <defs>
+                <linearGradient id="partial-fill">
+                  <stop offset="50%" stopColor="currentColor" />
+                  <stop offset="50%" stopColor="#E5E7EB" />
+                </linearGradient>
+              </defs>
+              <path
+                fill="url(#partial-fill)"
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              />
+            </svg>
+          </div>
+          <p className="text-2xl font-extralight text-neutral-800">
+            4.5 out of 5
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="flex justify-center text-center text-xs bg-white text-neutral-600 py-8 px-4 md:px-20">
+    <footer className="flex justify-center text-center text-xs text-neutral-600 py-10 px-4 md:px-20">
       <div className="w-fit">
-        <div className="w-full h-1 animate-border mt-20 mb-5  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
-        <p className="mt-2">Contact: +91 8116300272 | info@algabay.com</p>
-        <p>
-          &copy; {currentYear} Algabay Private Limited. All rights reserved.
-        </p>
-        <div className="w-full h-1 animate-border my-5  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
+        <div className="w-full h-1 animate-border  bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
+        <div className="py-4">
+          <p className="mt-2">Contact: +91 8116300272 | info@algabay.com</p>
+          <p>
+            &copy; {currentYear} Algabay Private Limited. All rights reserved.
+          </p>
+        </div>
+        <div className="w-full h-1 animate-border bg-gradient-to-r from-purple-500 via-sky-500 to-green-500 blur-md"></div>
       </div>
     </footer>
   );
