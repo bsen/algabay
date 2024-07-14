@@ -7,8 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "The Startup for Startups",
-  description:
-    "We turn killer ideas into realities. From AI to blockchain, we're the badass team that skyrockets your startup",
+  description: "We turn killer ideas into badass realities.",
   icons: {
     icon: "/icon.png",
   },

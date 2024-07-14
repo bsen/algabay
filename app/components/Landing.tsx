@@ -119,8 +119,7 @@ const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
       The Startup for Startups
     </h1>
     <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 font-extralight text-sm md:text-2xl text-center md:text-left mt-4">
-      We turn killer ideas into realities. From AI to blockchain, we're the
-      badass team that skyrockets your startup.
+      We turn killer ideas into badass realities.
     </p>
     <CallToActionButton />
   </div>
@@ -148,7 +147,7 @@ const ProductIcons: React.FC<ProductIconsProps> = ({
       productShow ? "scale-125 " : "scale-90 opacity-60"
     }`}
   >
-    {["WEBSITE", "UI UX", "AI", "APP", "BLOCKCHAIN"].map((item, index) => (
+    {["WEBSITE", "APP", "BLOCKCHAIN"].map((item, index) => (
       <div
         key={index}
         className="text-black flex flex-col gap-2 justify-center items-center m-4 md:m-0"
