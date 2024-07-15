@@ -19,7 +19,7 @@ const Landing: React.FC = () => {
   const [productShow, setProductShow] = useState<boolean>(false);
 
   return (
-    <div className="bg-white h-screen overflow-x-hidden">
+    <div className="bg-black h-screen overflow-x-hidden">
       <Header productShow={productShow} setProductShow={setProductShow} />
       <GradientBorder />
       <section>
@@ -41,7 +41,7 @@ const Landing: React.FC = () => {
 
 const Header: React.FC<HeaderProps> = ({ productShow, setProductShow }) => (
   <header className="fixed top-0 left-0 right-0 h-[10vh] z-50 overflow-hidden">
-    <div className="relative h-full bg-white/50 backdrop-filter backdrop-blur-md">
+    <div className="relative h-full bg-black/60 backdrop-filter backdrop-blur-md">
       <div className="flex justify-between items-center h-full px-4 md:px-5">
         <Logo />
 
@@ -57,16 +57,14 @@ const Header: React.FC<HeaderProps> = ({ productShow, setProductShow }) => (
 const Logo: React.FC = () => (
   <div className="flex gap-2 items-center transition-transform cursor-pointer duration-500 ease-in-out hover:scale-110">
     <img src="/logo.png" className="h-8 md:h-10" alt="logo" />
-    <div className="font-extralight text-neutral-800 text-2xl font-lexend">
-      algabay
-    </div>
+    <div className="font-light text-white text-2xl font-lexend">algabay</div>
   </div>
 );
 
 const DesktopMenu: React.FC<
   Omit<HeaderProps, "mobileMenuOpen" | "setMobileMenuOpen">
 > = ({ productShow, setProductShow }) => (
-  <div className="text-sm md:flex gap-10 items-center md:text-lg font-light text-black">
+  <div className="text-sm md:flex gap-10 items-center font-light text-white">
     <MenuDropdown
       title="What We Build"
       isOpen={productShow}
@@ -111,14 +109,14 @@ const ProductsPage: React.FC<{
 
 const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
   <div
-    className={`p-10 transition-transform cursor-pointer duration-1000 ${
+    className={`flex flex-col items-center justify-center p-10 transition-transform cursor-pointer duration-1000 ${
       productShow ? "scale-75 opacity-60" : "scale-110"
     }`}
   >
-    <h1 className="text-4xl md:text-[3.4rem] font-extralight text-center md:text-left text-black">
+    <h1 className="text-4xl md:text-[3.4rem] font-extralight text-white">
       The Startup for Startups
     </h1>
-    <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 font-extralight text-sm md:text-2xl text-center md:text-left mt-4">
+    <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 font-extralight text-sm md:text-2xl mt-6">
       We turn killer ideas into badass realities.
     </p>
     <CallToActionButton />
@@ -128,7 +126,7 @@ const HeroSection: React.FC<{ productShow: boolean }> = ({ productShow }) => (
 const CallToActionButton: React.FC = () => (
   <div
     onClick={() => window.open("https://wa.me/8116300272", "_blank")}
-    className="hover:bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 animate-border my-6 md:my-10 flex items-center justify-center md:justify-start gap-2 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-black text-white md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
+    className="bg-gradient-to-r from-purple-500 via-indigo-500 to-orange-500 animate-border my-6 md:my-10 flex items-center justify-center md:justify-start gap-2 cursor-pointer transition-transform duration-500 ease-in-out hover:scale-110 bg-black text-white md:text-2xl w-full md:w-fit px-4 py-2 md:py-1 font-extralight"
   >
     <div className="text-sm md:text-2xl">Let's Build Your Idea</div>
     <ArrowRightAltIcon sx={{ fontSize: { xs: 24, md: 30 } }} />
@@ -144,16 +142,16 @@ const ProductIcons: React.FC<ProductIconsProps> = ({
       setProductShow(!productShow);
     }}
     className={`transition-transform cursor-pointer duration-1000 flex flex-wrap justify-center md:justify-evenly w-full md:w-[80%] text-white font-light ${
-      productShow ? "scale-125 " : "scale-90 opacity-60"
+      productShow ? "scale-125 " : "scale-90 opacity-80"
     }`}
   >
-    {["WEBSITE", "APP", "BLOCKCHAIN"].map((item, index) => (
+    {["WEB", "BACKEND", "BLOCKCHAIN"].map((item, index) => (
       <div
         key={index}
-        className="text-black flex flex-col gap-2 justify-center items-center m-4 md:m-0"
+        className="text-white flex flex-col gap-2 justify-center items-center m-4 md:m-0"
       >
         <img
-          src={`/DarkThemeProducts/${item.toLowerCase()}.png`}
+          src={`/LightThemeProducts/${item.toLowerCase()}.png`}
           className="h-10 md:h-12"
           alt={item}
         />
@@ -167,21 +165,17 @@ const TracksPage = () => {
   const ref = useRef(null);
 
   const tracks = [
-    { image: "food-delivery.png", title: "Food Delivery" },
     { image: "taxi.png", title: "Taxi & Transportation" },
     { image: "education.png", title: "Education" },
-    { image: "grocery.png", title: "Grocery Delivery" },
-    { image: "beauty.png", title: "Beauty & Salon" },
+    { image: "grocery.png", title: "Delivery" },
     { image: "fitness.png", title: "Fitness" },
     { image: "rental.png", title: "Rental" },
-    { image: "consultation.png", title: "Consultation App" },
+    { image: "consultation.png", title: "Consultation" },
     { image: "ecommerce.png", title: "E-commerce" },
-    { image: "home-service.png", title: "Home Service" },
     { image: "healthcare.png", title: "Healthcare" },
     { image: "freelancer.png", title: "Freelancer" },
-    { image: "social-media.png", title: "Social Media App" },
-    { image: "dating.png", title: "Dating App" },
-    { image: "pickup-delivery.png", title: "Pickup & Delivery" },
+    { image: "social-media.png", title: "Social Platform" },
+    { image: "pickup-delivery.png", title: "Supply Chain" },
     { image: "real-estate.png", title: "Real Estate" },
   ];
 
@@ -211,7 +205,7 @@ const TracksPage = () => {
   return (
     <div
       ref={ref}
-      className="bg-white my-20 flex flex-col items-center justify-center px-4  text-white"
+      className="bg-black py-10 flex flex-col items-center justify-center px-4  text-white"
     >
       <motion.h2
         initial="hidden"
@@ -221,7 +215,7 @@ const TracksPage = () => {
           hidden: { opacity: 0, y: 50 },
         }}
         transition={{ duration: 0.8 }}
-        className="text-2xl md:text-4xl font-extralight text-center mb-6 max-w-3xl text-neutral-800"
+        className="text-2xl md:text-4xl font-extralight text-center mb-6 max-w-3xl text-white"
       >
         Our On Demand Industries
       </motion.h2>
@@ -233,7 +227,7 @@ const TracksPage = () => {
           hidden: { opacity: 0 },
         }}
         transition={{ delay: 0.8, duration: 0.8 }}
-        className="text-sm md:text-2xl font-extralight text-center mb-16 max-w-3xl text-neutral-800"
+        className="text-sm md:text-2xl font-extralight text-center mb-16 max-w-3xl text-white"
       >
         We build tomorrow's tech for every industry. Your game changing idea?
         We'll make it real.
@@ -253,14 +247,14 @@ const TracksPage = () => {
               }),
               hidden: { opacity: 0, scale: 0.9 },
             }}
-            className="bg-white text-black shadow-md rounded-lg p-4 md:p-6 hover:shadow-xl hover:scale-105 hover:bg-shadow-xl cursor-pointer flex flex-col items-center transition duration-300 ease-in-out"
+            className="hover:bg-gradient-to-r from-purple-600 via-indigo-600 to-orange-600 animate-border bg-neutral-900 text-white shadow-md rounded-lg p-4 hover:shadow-xl hover:scale-105 hover:bg-shadow-xl cursor-pointer flex flex-col items-center transition duration-300 ease-in-out"
           >
             <img
-              src={`/LightThemeIndustries/${track.image}`}
+              src={`/DarkThemeIndustries/${track.image}`}
               alt={track.title}
-              className="w-12 h-12 mb-4 object-contain"
+              className="w-8 h-8 mb-2 object-contain"
             />
-            <h3 className="text-lg md:text-xl font-extralight text-center">
+            <h3 className="text-lg font-extralight text-center">
               {track.title}
             </h3>
           </motion.div>
@@ -333,14 +327,9 @@ const Numbers: React.FC = () => {
   const industriesCount = useCountAnimation(24, 2000, isCountSectionInView);
   const NumbersData = [
     {
-      count: countryCount,
-      image: "country.png",
-      title: "Countries Served",
-    },
-    {
-      count: customersCount,
-      image: "customer.png",
-      title: "Customers",
+      count: globalOutReachCount,
+      image: "globaloutreach.png",
+      title: "Global Outreach",
     },
     {
       count: industriesCount,
@@ -348,19 +337,19 @@ const Numbers: React.FC = () => {
       title: "Industries",
     },
     {
-      count: globalOutReachCount,
-      image: "globaloutreach.png",
-      title: "Global Outreach",
+      count: countryCount,
+      image: "country.png",
+      title: "Countries Served",
     },
   ];
   return (
     <div
-      className="my-20 py-20 flex flex-col md:flex-row gap-10 items-center justify-evenly"
+      className="bg-black pt-20 pb-10 flex flex-col md:flex-row gap-12 items-center justify-evenly"
       ref={countSectionRef}
     >
       {NumbersData.map((data) => (
-        <div className="flex flex-col items-center justify-center w-full text-center text-neutral-800 text-2xl font-medium font-sans mb-8 md:mb-0">
-          <div className="text-2xl font-lexend font-extralight text-neutral-800">
+        <div className="flex flex-col items-center justify-center w-full text-center text-white text-2xl font-medium font-sans mb-8 md:mb-0">
+          <div className="text-2xl font-lexend font-extralight text-white">
             {data.count}+
           </div>
           <img
@@ -393,7 +382,7 @@ const Partners: React.FC = () => {
     },
   ];
   return (
-    <div className="flex flex-col my-20 gap-8 items-center justify-evenly text-neutral-800">
+    <div className="bg-black flex flex-col py-10 gap-12 items-center justify-evenly text-white">
       <div className="text-2xl font-extralight font-lexend">Backed By</div>
       <div className="w-full flex flex-col md:flex-row gap-10 items-center justify-evenly">
         {PartnersData.map((data) => (
@@ -440,9 +429,7 @@ const Rating: React.FC = () => {
               />
             </svg>
           </div>
-          <p className="text-2xl font-extralight text-neutral-800">
-            4.5 out of 5
-          </p>
+          <p className="text-2xl font-extralight text-white">4.5 out of 5</p>
         </div>
       </div>
     </div>
